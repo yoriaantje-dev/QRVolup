@@ -7,7 +7,7 @@
 			"path": "../TurVolup/turving_volupia/lib"
 		},
 		{
-			"path": "mobile_scanner master"
+			"path": "../KEMBIT_Mobile_POC_A/flutter_asc/lib"
 		}
 	],
 	"settings": {}

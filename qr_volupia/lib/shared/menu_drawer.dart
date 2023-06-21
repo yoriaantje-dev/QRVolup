@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_volupia/screens/management_screen.dart';
 import '../main.dart';
 import '../screens/home_screen.dart';
 
@@ -8,7 +9,7 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> menuTitles = [];
-    menuTitles = ["Home"];
+    menuTitles = ["Home", "Deelnemers"];
 
     return Drawer(
       child: Column(
@@ -21,7 +22,7 @@ class MenuDrawer extends StatelessWidget {
               child: Image.asset(
                 "assets/VolupiaLogo_WIT.png",
                 fit: BoxFit.fitHeight,
-                ),
+              ),
             ),
           ),
           Expanded(
@@ -45,7 +46,7 @@ class MenuDrawer extends StatelessWidget {
         leading: getIcon(menuItem, context.isDarkMode),
         title: Text(menuItem,
             style: theme.textTheme.headlineMedium!
-                .copyWith(color: Colors.red.shade400,fontSize: 26)),
+                .copyWith(color: Colors.red.shade400, fontSize: 24)),
         onTap: () {
           screen = getScreen(menuItem);
           Navigator.of(context).pop();
@@ -64,6 +65,9 @@ class MenuDrawer extends StatelessWidget {
       case "Home":
         returnIcon = Icons.home;
         break;
+      case "Deelnemers":
+        returnIcon = Icons.groups;
+        break;
       default:
         returnIcon = Icons.question_mark;
         break;
@@ -79,6 +83,8 @@ class MenuDrawer extends StatelessWidget {
     switch (menuItem) {
       case "Home":
         return const HomeScreen();
+      case "Deelnemers":
+        return const ManagementScreen();
       default:
         return const HomeScreen();
     }

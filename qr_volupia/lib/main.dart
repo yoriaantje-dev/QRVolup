@@ -7,7 +7,6 @@ void main() {
 
 class FlutterApp extends StatelessWidget {
   const FlutterApp({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -39,5 +38,4 @@ extension DarkMode on BuildContext {
 
   Color snackbarTextColor() => isDarkMode ? Colors.black : Colors.white;
   Color snackbarBackgroundColor() => isDarkMode ? Colors.white : Colors.grey;
-
 }
