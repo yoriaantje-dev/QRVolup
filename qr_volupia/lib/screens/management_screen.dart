@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_volupia/main.dart';
-import 'package:qr_volupia/screens/widgets/flow_menu.dart';
+
+import '../screens/widgets/flow_menu.dart';
 import '../data/file_helper.dart';
 import '../data/models/participant_model.dart';
 import '../shared/menu_drawer.dart';
@@ -63,7 +64,7 @@ class _ManagementScreenState extends State<ManagementScreen>
     }
     Map<String, dynamic> saveMap = {"participantList": saveList};
     helper.writeToFile("participantStorage", jsonEncode(saveMap));
-    if(!silent) _showSnackBar("Saved to file.");
+    if (!silent) _showSnackBar("Saved to file.");
     if (kDebugMode) print("Saved to file.");
   }
 
@@ -75,6 +76,19 @@ class _ManagementScreenState extends State<ManagementScreen>
     setState(() {
       participantList.add(providedParticipant ??= Participant(name, age));
     });
+  }
+
+  void _massAddParticipants(String commaSeperatedListNameAge) {
+    List<String> participantNameAgeList =
+        commaSeperatedListNameAge.split(",");
+    for (String participantInfo in participantNameAgeList) {
+      List<String> participantInfoList = participantInfo.split("_");
+      Participant newParticipant = Participant(
+          participantInfoList[0], int.tryParse(participantInfoList[1]) ?? 99);
+      setState(() {
+        participantList.add(newParticipant);
+      });
+    }
   }
 
   void _removeParticipant(int index) {
@@ -132,6 +146,7 @@ class _ManagementScreenState extends State<ManagementScreen>
       floatingActionButton: floatingActionMenu(
         context,
         _addParticipant,
+        _massAddParticipants,
         _saveList,
       ),
       body: Padding(
@@ -185,33 +200,41 @@ class _ManagementScreenState extends State<ManagementScreen>
                   name: nameController.text,
                 );
               },
-              child: const Text("Save"),
+              child: const Text("Voeg toe"),
             ),
             Text(
               "Huidige gebruikers: ",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: participantList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Card(
-                    color: Colors.red,
-                    key: Key(participantList[index].name),
-                    child: ListTile(
-                      title: Text("Naam: ${participantList[index].name}"),
-                      subtitle: Text("Leeftijd: ${participantList[index].age}"),
-                      trailing: IconButton(
-                        color: Colors.white,
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => _removeParticipant(index),
-                      ),
-                    ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: SingleChildScrollView(
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: participantList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Card(
+                          color: Colors.red,
+                          key: Key(participantList[index].name),
+                          child: ListTile(
+                            title: Text("Naam: ${participantList[index].name}"),
+                            subtitle: Text("Leeftijd: ${participantList[index].age}"),
+                            trailing: IconButton(
+                              color: Colors.white,
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => _removeParticipant(index),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ),
             ),
           ],
         ),

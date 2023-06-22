@@ -61,7 +61,7 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('CANCEL'),
+          child: const Text('ANNULEREN'),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -73,6 +73,74 @@ class _AddParticipantDialogState extends State<AddParticipantDialog> {
                 : const MaterialStatePropertyAll<Color>(Colors.red),
           ),
           child: const Text('OPSLAAN'),
+          onPressed: () {
+            _onSavePressed(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class MassAddParticipantsDialog extends StatefulWidget {
+  const MassAddParticipantsDialog({super.key});
+
+  @override
+  State<MassAddParticipantsDialog> createState() => _MassAddParticipantsDialogState();
+}
+
+class _MassAddParticipantsDialogState extends State<MassAddParticipantsDialog> {
+    final TextEditingController _massInputController = TextEditingController();
+
+  @override
+  void dispose() {
+    _massInputController.dispose();
+    super.dispose();
+  }
+
+  void _onSavePressed(BuildContext context) {
+    final input = _massInputController.text.trim();
+
+    if (input.isNotEmpty) {
+      Navigator.of(context).pop(input);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Invoer incorrect/ onvolledig!"),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Deelnemer Toevoegen"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Het formaat is: Deelnemer1Voornaam Deelnemer1Achternaam_Deelnemer1Leeftijd,Deelnemer2Voornaam Deelnemer2Achternaam_Deelnemer2Leeftijd,Deelnemer3Voornaam Deelnemer3Achternaam_Deelnemer3Leeftijd"),
+          TextField(
+            controller: _massInputController,
+            autofocus: true,
+            decoration: const InputDecoration(hintText: "Deelnemer1Voornaam Deelnemer1Achternaam_Deelnemer1Leeftijd,Deelnemer2Voornaam Deelnemer2Achternaam_Deelnemer2Leeftijd"),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('ANNULEREN'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: context.isDarkMode
+                ? MaterialStatePropertyAll<Color>(Colors.red.shade800)
+                : const MaterialStatePropertyAll<Color>(Colors.red),
+          ),
+          child: const Text('TOEVOEGEN'),
           onPressed: () {
             _onSavePressed(context);
           },

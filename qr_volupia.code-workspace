@@ -2,12 +2,6 @@
 	"folders": [
 		{
 			"path": "qr_volupia"
-		},
-		{
-			"path": "../TurVolup/turving_volupia/lib"
-		},
-		{
-			"path": "../KEMBIT_Mobile_POC_A/flutter_asc/lib"
 		}
 	],
 	"settings": {}

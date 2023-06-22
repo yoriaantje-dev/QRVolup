@@ -14,7 +14,7 @@ Color? dialButtonBackgroundColor(bool isDarkMode) =>
     isDarkMode ? Colors.red[400] : Colors.red[200];
 
 Widget floatingActionMenu(BuildContext context, dynamic addParticipantFunction,
-    dynamic saveFunction) {
+    dynamic massAddParticipantsFunction, dynamic saveFunction) {
   return SpeedDial(
     icon: Icons.save,
     activeIcon: Icons.close_fullscreen_rounded,
@@ -47,6 +47,32 @@ Widget floatingActionMenu(BuildContext context, dynamic addParticipantFunction,
               builder: (context) => const AddParticipantDialog(),
             ),
           );
+        },
+      ),
+      SpeedDialChild(
+        backgroundColor: dialButtonBackgroundColor(context.isDarkMode),
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.groups_2_rounded),
+        labelWidget: Container(
+          decoration: BoxDecoration(
+              color: dialLabelBackgroundColor(context.isDarkMode),
+              borderRadius: const BorderRadius.all(Radius.circular(7))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Massa-deelnemers toevoegen",
+              style: TextStyle(
+                  color: context.isDarkMode ? Colors.white : Colors.black),
+            ),
+          ),
+        ),
+        onTap: () async {
+          String input = await showDialog<String>(
+                context: context,
+                builder: (context) => const MassAddParticipantsDialog(),
+              ) ??
+              "";
+          massAddParticipantsFunction(input);
         },
       ),
       SpeedDialChild(
