@@ -158,35 +158,37 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             padding: const EdgeInsets.all(20.0),
             child: Text("Laatste scan: $scanResult"),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: SingleChildScrollView(
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: participantList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    color: participantList[index].checkedIn
-                        ? Colors.green[900]
-                        : Colors.red[900],
-                    key: Key(participantList[index].name),
-                    child: ListTile(
-                      title: Text(participantList[index].name),
-                      subtitle: Text("Leeftijd: ${participantList[index].age}"),
-                      trailing: Switch(
-                        activeColor: Colors.white,
-                        value: participantList[index].checkedIn,
-                        onChanged: (bool value) {
-                          setState(() {
-                            participantList[index].checkedIn = value;
-                          });
-                          _saveList(silent: true);
-                        },
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: SingleChildScrollView(
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: participantList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      color: participantList[index].checkedIn
+                          ? Colors.green[900]
+                          : Colors.red[900],
+                      key: Key(participantList[index].name),
+                      child: ListTile(
+                        title: Text(participantList[index].name),
+                        subtitle: Text("Leeftijd: ${participantList[index].age}"),
+                        trailing: Switch(
+                          activeColor: Colors.white,
+                          value: participantList[index].checkedIn,
+                          onChanged: (bool value) {
+                            setState(() {
+                              participantList[index].checkedIn = value;
+                            });
+                            _saveList(silent: true);
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),

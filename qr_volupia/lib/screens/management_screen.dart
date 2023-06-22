@@ -79,8 +79,7 @@ class _ManagementScreenState extends State<ManagementScreen>
   }
 
   void _massAddParticipants(String commaSeperatedListNameAge) {
-    List<String> participantNameAgeList =
-        commaSeperatedListNameAge.split(",");
+    List<String> participantNameAgeList = commaSeperatedListNameAge.split(",");
     for (String participantInfo in participantNameAgeList) {
       List<String> participantInfoList = participantInfo.split("_");
       Participant newParticipant = Participant(
@@ -106,8 +105,14 @@ class _ManagementScreenState extends State<ManagementScreen>
       behavior: SnackBarBehavior.floating,
       backgroundColor: context.snackbarBackgroundColor(),
     );
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    try {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error showing snackbar: $e");
+      }
+    }
   }
 
   @override
@@ -222,7 +227,8 @@ class _ManagementScreenState extends State<ManagementScreen>
                           key: Key(participantList[index].name),
                           child: ListTile(
                             title: Text("Naam: ${participantList[index].name}"),
-                            subtitle: Text("Leeftijd: ${participantList[index].age}"),
+                            subtitle:
+                                Text("Leeftijd: ${participantList[index].age}"),
                             trailing: IconButton(
                               color: Colors.white,
                               icon: const Icon(Icons.delete),
