@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Flutter: Attach to Device",
+            "type": "dart",
+            "request": "attach"
+        },
+        {
+            "name": "qr_volupia",
+            "cwd": "qr_volupia",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "qr_volupia (profile mode)",
+            "cwd": "qr_volupia",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "qr_volupia (release mode)",
+            "cwd": "qr_volupia",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_assets",
+            "cwd": "qr_volupia\\build\\flutter_assets",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_assets (profile mode)",
+            "cwd": "qr_volupia\\build\\flutter_assets",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_assets (release mode)",
+            "cwd": "qr_volupia\\build\\flutter_assets",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
