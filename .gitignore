@@ -29,3 +29,5 @@ doc/api/
 data_storage_demo/
 
 mobile_scanner master/
+
+qr_generator/codes/*
