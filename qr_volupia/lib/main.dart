@@ -15,14 +15,12 @@ class FlutterApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.red,
-          primaryColorDark: Colors.red.shade800,
         ),
         primaryColorDark: Colors.red.shade800,
       ),
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.red,
-          primaryColorDark: Colors.red.shade800,
         ),
         primaryColorDark: Colors.red.shade800,
       ),

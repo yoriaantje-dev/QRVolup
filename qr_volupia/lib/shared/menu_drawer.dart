@@ -49,7 +49,7 @@ class MenuDrawer extends StatelessWidget {
                 .copyWith(color: Colors.red.shade400, fontSize: 24)),
         onTap: () {
           screen = getScreen(menuItem);
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).pop();
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => screen),
           );

@@ -128,18 +128,18 @@ class _ManagementScreenState extends State<ManagementScreen>
     _saveList();
   }
 
-  @override
-  void dispose() {
-    _saveList();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _saveList();
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.dispose();
+  // }
 
-  @override
-  void deactivate() {
-    _saveList();
-    super.deactivate();
-  }
+  // @override
+  // void deactivate() {
+  //   _saveList();
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {
