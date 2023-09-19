@@ -19,7 +19,8 @@ for line in file:
   participant_list = sorted(participant_list, key=lambda x: x['name'])
 file.close()
 
-file = open(f"{root_folder}/qr_generator/mail.txt", "w")
+mail_file = open(f"{root_folder}/qr_generator/mail.txt", "w")
+deelnemer_file = open(f"{root_folder}/qr_generator/deelnemerlijst.txt", "w")
 for participant in participant_list:
     name = participant["name"]
     email = participant["mail"]
@@ -33,6 +34,8 @@ for participant in participant_list:
     draw_image.text((round(width*0.2), round(height*0.88)), name, font=font_calibri)
 
     image.save(f"{root_folder}/qr_generator/codes/{name}.png")
-    file.write(f"{name.strip()} {email}\n")
+    mail_file.write(f"{name.strip()} {email}\n")
+    deelnemer_file.write(f"{name.strip()},")
 
-file.close()
+mail_file.close()
+deelnemer_file.close()
