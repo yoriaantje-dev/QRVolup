@@ -32,3 +32,4 @@ mobile_scanner master/
 
 qr_generator/codes/*
 new_qr_app/lib/qr_example/*
+qr_generator/mail.txt
