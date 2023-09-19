@@ -31,3 +31,4 @@ data_storage_demo/
 mobile_scanner master/
 
 qr_generator/codes/*
+qr_generator/mail.txt
