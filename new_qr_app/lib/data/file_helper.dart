@@ -32,7 +32,6 @@ class FileStorage {
 
   Future<File> writeFile(String content) async {
     final file = await _localFile;
-
     return file.writeAsString(content);
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:new_qr_app/flow_menu.dart';
 
 import '../data/file_helper.dart';
 import '../data/models/participant_model.dart';
@@ -18,18 +19,46 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   String scanResult = "NO_SCAN";
   List<Participant> participantList = [];
 
-  void _loadFromFile() async {
-    String jsonString = await widget.storage.readFileAsString();
-    Map<String, dynamic> mappedJson = jsonDecode(jsonString);
-    for (Map<String, dynamic> participantMap in mappedJson["participantList"]) {
-      setState(() {
-        participantList.add(Participant.fromJSON(participantMap));
-      });
-    }
-    if (kDebugMode) print("Loaded from file.");
+  List<Participant> _makeDefaultList() {
+    List<Participant> defaultList = [];
+    final Participant voorbeeldDeelnemer = Participant("Voorbeeld");
+    defaultList.add(voorbeeldDeelnemer);
+    return defaultList;
   }
 
-  void _saveList({silent = false}) async {
+  void _loadFromFile({bool reset = false}) async {
+    String jsonString = await widget.storage.readFileAsString();
+    try {
+      Map<String, dynamic> mappedJson = jsonDecode(jsonString);
+      for (Map<String, dynamic> participantMap
+          in mappedJson["participantList"]) {
+        setState(() {
+          participantList.add(Participant.fromJSON(participantMap));
+        });
+      }
+    } catch (e) {
+      setState(() {
+        participantList = _makeDefaultList();
+      });
+      if (kDebugMode) print("Error: $e\n" "Loaded from defaults.");
+    }
+
+    if (participantList.isEmpty || reset) {
+      setState(() {
+        participantList = _makeDefaultList();
+      });
+    } else if (kDebugMode) {
+      print("Loaded from file.");
+    }
+  }
+
+  void _saveList({bool reset = false}) async {
+    if (reset) {
+      setState(() {
+        participantList = _makeDefaultList();
+      });
+    }
+
     List<Map<String, dynamic>> saveList = [];
     for (Participant participant in participantList) {
       saveList.add(participant.toMap());
@@ -39,60 +68,81 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     if (kDebugMode) print("Saved to file.");
   }
 
-  // TODO: Change to ENUMRATE XD
+    void _deleteList() async {
+      setState(() {
+        participantList = [];
+      });
+      _saveList();
+    }
+
+  
+
   void checkScanResult(String scannedName) {
-    int index = 0;
-    for (Participant participant in participantList) {
+    for (final (index, participant) in participantList.indexed) {
       if (participant.name == scannedName) {
         setState(() {
           try {
             participantList[index].checkedIn = true;
+            _saveList();
           } catch (e) {
             if (kDebugMode) {
-              print(
-                  "Error looking in participantlist.\nCould not find $scannedName in participants or:\n $e");
+              print("Error looking in participantlist.\n"
+                  "Could not find $scannedName in participants or:\n"
+                  "$e");
             }
           }
         });
       }
-      if (index != participantList.length - 1) {
-        index++;
-      }
     }
   }
 
-  // TODO: https://pub.dev/packages/mobile_scanner
-  void handleQRScanned() async {
-    String scannedName = (await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const BarcodeScannerWithoutController(),
-          ),
-        ) ??
-        "SCAN MISLUKT/ GEANNULEERD");
-    // _showScannedName(scannedName);
+  void functionCapture() async {
+    var scanResult = await Navigator.pushNamed(context, "/scanner");
+    String scannedName = scanResult.toString();
+    checkScanResult(scannedName);
     setState(() {
       scanResult = scannedName;
     });
   }
 
+  void functionAddParticipant(String input) async {
+    if (input.isNotEmpty) {
+      setState(() {
+        participantList.add(Participant(input));
+      });
+      _saveList();
+    }
+  }
+
+  void functionAddParticipantList(String input) {
+    if (input.isNotEmpty) {
+      List<String> participantStringList = input.split(",");
+      for (String name in participantStringList) {
+        setState(() {
+          participantList.add(Participant(name));
+        });
+      }
+      _saveList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (participantList == List.empty()) _loadFromFile();
+    if (participantList.isEmpty) {
+      _loadFromFile(reset: false);
+    } else {
+      _saveList(reset: false);
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text("Aftekenlijst")),
-      floatingActionButton: Container(
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.redAccent,
-        ),
-        child: IconButton(
-          iconSize: 40,
-          icon: const Icon(Icons.camera),
-          onPressed: () {
-            handleQRScanned();
-          },
-        ),
+      floatingActionButton: floatingActionMenu(
+        context,
+        functionCapture,
+        _saveList,
+        _deleteList,
+        functionAddParticipant,
+        functionAddParticipantList,
       ),
       body: Column(
         children: [
@@ -109,33 +159,42 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   shrinkWrap: true,
                   itemCount: participantList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      color: participantList[index].checkedIn
-                          ? Colors.green[900]
-                          : Colors.red[900],
-                      key: Key(participantList[index].name),
-                      child: ListTile(
-                        title: Text(participantList[index].name),
-                        subtitle:
-                            Text("Leeftijd: ${participantList[index].age}"),
-                        trailing: Switch(
-                          activeColor: Colors.white,
-                          value: participantList[index].checkedIn,
-                          onChanged: (bool value) {
-                            setState(() {
-                              participantList[index].checkedIn = value;
-                            });
-                            _saveList(silent: true);
-                          },
-                        ),
-                      ),
-                    );
+                    return participantCard(index);
                   },
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget participantCard(int index) {
+    return Card(
+      color: participantList[index].checkedIn
+          ? Colors.green[900]
+          : Colors.red[900],
+      key: Key(participantList[index].name),
+      child: ListTile(
+        title: Text(
+          participantList[index].name,
+          style: const TextStyle(color: Colors.white),
+        ),
+        subtitle: Text(
+          "Gezien: ${participantList[index].checkedIn ? 'ja' : 'nee'}",
+          style: TextStyle(color: Colors.grey[300]),
+        ),
+        trailing: Switch(
+          activeColor: Colors.white,
+          value: participantList[index].checkedIn,
+          onChanged: (bool value) {
+            setState(() {
+              participantList[index].checkedIn = value;
+            });
+            // _saveList(silent: true);
+          },
+        ),
       ),
     );
   }
