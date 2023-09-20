@@ -41,7 +41,7 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                   setState(() {
                     this.barcode = barcode;
                   });
-                  Future.delayed(const Duration(milliseconds: 2500), () {
+                  Future.delayed(const Duration(milliseconds: 1750), () {
                     Navigator.of(context, rootNavigator: true)
                         .maybePop(barcode.barcodes.first.rawValue);
                   });
