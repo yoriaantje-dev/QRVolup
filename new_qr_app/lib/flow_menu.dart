@@ -47,13 +47,13 @@ Widget floatingActionMenu(
           ),
         ),
         onTap: () async {
-          await _displayTextInputDialog(
+          bool confirmed = await _displayTextInputDialog(
             context,
             textFieldController,
             "Deelnemer toevoegen",
             "Voornaam Achternaam",
           );
-          functionAddParticipantList(textFieldController.text);
+          if (confirmed) functionAddParticipantList(textFieldController.text);
         },
       ),
       SpeedDialChild(
@@ -74,13 +74,13 @@ Widget floatingActionMenu(
           ),
         ),
         onTap: () async {
-          await _displayTextInputDialog(
+          bool confirmed = await _displayTextInputDialog(
             context,
             textFieldController,
             "Deelnemers toevoegen",
-            "Voornaam Achternaam, VolgendeVoornaam Volgende Achternaam, VolgendeVoornaam Volgende Achternaam, etc.",
+            "Voornaam_Achternaam,VolgendeVoornaam_Volgende Achternaam,VolgendeVoornaam_VolgendeAchternaam,etc.",
           );
-          functionAddParticipantList(textFieldController.text);
+          if (confirmed) functionAddParticipantList(textFieldController.text);
         },
       ),
       SpeedDialChild(
@@ -113,25 +113,47 @@ Widget floatingActionMenu(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Delete",
+              "Delete alles",
               style: TextStyle(
                   color: context.isDarkMode ? Colors.white : Colors.black),
             ),
           ),
         ),
-        onTap: functionDelete,
+        onTap: () async {
+          bool confirmed = await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Verwijder iedereen"),
+                content: Text(
+                    "Bevestig dat je iedereen wilt verwijderen van de lijst."),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Annuleren'),
+                    onPressed: () => Navigator.pop(context, false),
+                  ),
+                  ElevatedButton(
+                    child: const Text('Ja'),
+                    onPressed: () => Navigator.pop(context, true),
+                  ),
+                ],
+              );
+            },
+          );
+          if (confirmed) functionDelete();
+        },
       ),
     ],
   );
 }
 
-Future<void> _displayTextInputDialog(
+Future<bool> _displayTextInputDialog(
   BuildContext context,
   TextEditingController textFieldController,
   String title,
   String hint,
 ) async {
-  return showDialog(
+  return await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -147,7 +169,7 @@ Future<void> _displayTextInputDialog(
               Navigator.pop(context, false);
             },
           ),
-          TextButton(
+          ElevatedButton(
             child: const Text('OK'),
             onPressed: () {
               Navigator.pop(context, true);

@@ -4,7 +4,7 @@ import 'package:Volupia_QR_Checker/screens/qr_screens/barcode_scanner_zoom.dart'
 import 'package:Volupia_QR_Checker/screens/home_screen.dart';
 
 // DebugConsole Filter:
-// !I/Flutter, !D/Input, !D/Surface, !I/View
+// !*/Flutter, !*/Input, !*/Surface, !*/View, !*/SurfaceView, !*/TransportRuntime, !*/InsetsController
 
 void main() {
   runApp(const FlutterApp());

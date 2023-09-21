@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
-  String scanResult = "NO_SCAN";
+  String scanResult = "";
   List<Participant> participantList = [];
 
   List<Participant> _makeDefaultList() {
@@ -43,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       if (kDebugMode) print("Error: $e\n" "Loaded from defaults.");
     }
 
-    if (participantList.isEmpty || reset) {
+    // if (participantList.isEmpty || reset) {
+    if (reset) {
       setState(() {
         participantList = _makeDefaultList();
       });
@@ -52,12 +53,26 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     }
   }
 
+  void removeDuplicateParticipants() {
+    final nameSet = <String>{};
+    final noDuplicateList = <Participant>[];
+    for (final participant in participantList) {
+      if (nameSet.add(participant.name.trim())) {
+        noDuplicateList.add(participant);
+      }
+    }
+    setState(() {
+      participantList = noDuplicateList;
+    });
+  }
+
   void _saveList({bool reset = false}) async {
     if (reset) {
       setState(() {
         participantList = _makeDefaultList();
       });
     }
+    removeDuplicateParticipants();
 
     List<Map<String, dynamic>> saveList = [];
     for (Participant participant in participantList) {
@@ -68,14 +83,41 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     if (kDebugMode) print("Saved to file.");
   }
 
-    void _deleteList() async {
+  void _deleteList() {
+    setState(() {
+      participantList = [];
+    });
+    _saveList();
+  }
+
+  void removeParticipantAtIndex(int index) async {
+    bool confirmed = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Verwijder ${participantList[index].name}"),
+          content: Text("Weet je zeker dat je '${participantList[index].name}' wilt verwijderen?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Annuleren'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            ElevatedButton(
+              child: const Text('Ja'),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed) {
       setState(() {
-        participantList = [];
+        participantList.removeAt(index);
       });
       _saveList();
     }
-
-  
+  }
 
   void checkScanResult(String scannedName) {
     for (final (index, participant) in participantList.indexed) {
@@ -97,8 +139,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void functionCapture() async {
-    var scanResult = await Navigator.pushNamed(context, "/scanner");
-    String scannedName = scanResult.toString();
+    var scannedQR = await Navigator.pushNamed(context, "/scanner");
+    String scannedName = scannedQR.toString().trim().toLowerCase();
     checkScanResult(scannedName);
     setState(() {
       scanResult = scannedName;
@@ -108,8 +150,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void functionAddParticipant(String input) async {
     if (input.isNotEmpty) {
       setState(() {
-        participantList.add(Participant(input));
+        participantList.add(Participant(input.trim().toLowerCase()));
       });
+      removeDuplicateParticipants();
       _saveList();
     }
   }
@@ -119,9 +162,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       List<String> participantStringList = input.split(",");
       for (String name in participantStringList) {
         setState(() {
-          participantList.add(Participant(name));
+          participantList.add(Participant(name.trim().toLowerCase()));
         });
       }
+      removeDuplicateParticipants();
       _saveList();
     }
   }
@@ -148,7 +192,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text("Laatste scan: $scanResult"),
+            child: scanResult.isNotEmpty
+                ? Text("Laatste scan: $scanResult")
+                : Container(),
           ),
           Expanded(
             child: Padding(
@@ -192,9 +238,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             setState(() {
               participantList[index].checkedIn = value;
             });
-            // _saveList(silent: true);
+            _saveList();
           },
         ),
+        onLongPress: () => removeParticipantAtIndex(index),
       ),
     );
   }
