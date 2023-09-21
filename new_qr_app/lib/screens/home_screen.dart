@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   String scanResult = "";
+  Participant lastScannedParticipant = Participant("NONE");
   List<Participant> participantList = [];
 
   List<Participant> _makeDefaultList() {
@@ -125,6 +126,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         setState(() {
           try {
             participantList[index].checkedIn = true;
+            lastScannedParticipant = participantList[index];
             _saveList();
           } catch (e) {
             if (kDebugMode) {
@@ -193,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: scanResult.isNotEmpty
-                ? Text("Laatste scan: $scanResult")
+                ? Text("Laatste scan: $scanResult --> Nu (${lastScannedParticipant.checkedIn ? 'Ingecheckt' : 'Niet gevonden/ error'})")
                 : Container(),
           ),
           Expanded(
