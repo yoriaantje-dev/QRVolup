@@ -1,14 +1,19 @@
 Eddy_Jacob;smc1t2eddy@gmail.com
 Minne_Botinga;Mtbotinga@gmail.com
 Laura_Hoogers;Laurahoogers01052003@gmail.com
-Chloe_Pisters;Chloebp@outlook.com
+Chloe_Pisters_;Chloebp@outlook.com
 Tessa_Verstappen;tessaverstappen2004@gmail.com
 Mirthe_Coppus;2061091coppus@zuyd.nl
 Raoul_Dohmen;raoul.dohmen@hotmail.com
-Keanu_oomen;Keanuoomenofficial@gmail.com
+Keanu_Oomen;Keanuoomenofficial@gmail.com
 Mike_Heutz;Mikeheutz@gmail.com_
-Dean_Vromen;d.vromen@gmail.com
+Dean_Vromen;deanvromen@gmail.com
 Jens_Oomen;jens.oomen04@gmail.com
+Leigh_Oudman;leigh.oudman@gmail.com
+Olivier_Quadakkers_;olivierquadakkers@gmail.com
+Senna_Herben;senna.herben@gmail.com
+Dylan_de_Groot;dylandegroot2003@gmail.com
+Lieke_Krottjé;Krottjelieke@gmail.com
 Dylan_Schoonens;dylanschoonens25@gmail.com
 Elyn_Kamerman;elynkamerman@gmail.com
 Nienke_van_den_Akker;vdakker.nienke@gmail.com
@@ -17,3 +22,4 @@ Lisa_Ranft;lisa13.ranft@hotmail.com
 Dion_Demas;dion.demas@rimburg.nl
 Vera_Korsten;vrmkorsten@gmail.com
 Daniele_Oggianu;danieleoggianu2005@gmail.com
+Bram_Jansen;bram96.jansen@outlook.com
