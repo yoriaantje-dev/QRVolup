@@ -2,7 +2,7 @@
 import qrcode
 from PIL import Image, ImageFont, ImageDraw
 
-root_folder = "C:/Users/yoria/no_space_folder/newDev/QRVolup"
+root_folder = "D:/PrivateDev/QRVolup/"
 
 file = open(f"{root_folder}/qr_generator/inschrijving.txt", "r")
 participant_list = []
