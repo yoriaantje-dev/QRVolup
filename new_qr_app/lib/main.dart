@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:new_qr_app/data/file_helper.dart';
-import 'package:new_qr_app/screens/qr_screens/barcode_scanner_zoom.dart';
-import 'package:new_qr_app/screens/home_screen.dart';
+import 'package:Volupia_QR_Checker/data/file_helper.dart';
+import 'package:Volupia_QR_Checker/screens/qr_screens/barcode_scanner_zoom.dart';
+import 'package:Volupia_QR_Checker/screens/home_screen.dart';
 
 // DebugConsole Filter:
 // !I/Flutter, !D/Input, !D/Surface, !I/View

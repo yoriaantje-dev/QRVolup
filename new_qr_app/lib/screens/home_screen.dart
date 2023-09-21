@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:new_qr_app/flow_menu.dart';
+import 'package:Volupia_QR_Checker/flow_menu.dart';
 
 import '../data/file_helper.dart';
 import '../data/models/participant_model.dart';

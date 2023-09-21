@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:new_qr_app/main.dart';
+import 'package:Volupia_QR_Checker/main.dart';
 
 Color? dialMainOverlayColor(bool isDarkMode) =>
     isDarkMode ? Colors.grey[900] : Colors.grey[300];
