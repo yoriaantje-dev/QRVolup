@@ -9,7 +9,13 @@
             "type": "dart",
             "request": "launch",
             "program": "new_qr_app/lib/main.dart"
+        },
+        {
+            "name": "Volupia QR Check (Release)",
+            "type": "dart",
+            "request": "launch",
+            "program": "new_qr_app/lib/main.dart",
+            "flutterMode": "release"
         }
-        
     ]
 }

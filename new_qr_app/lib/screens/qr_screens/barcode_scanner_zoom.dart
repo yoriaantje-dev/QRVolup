@@ -41,7 +41,7 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                   setState(() {
                     this.barcode = barcode;
                   });
-                  Future.delayed(const Duration(milliseconds: 1750), () {
+                  Future.delayed(const Duration(milliseconds: 1350), () {
                     Navigator.of(context, rootNavigator: true)
                         .maybePop(barcode.barcodes.first.rawValue);
                   });
@@ -78,7 +78,7 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                                     color: Colors.grey,
                                   );
                                 }
-                                switch (state as TorchState) {
+                                switch (state) {
                                   case TorchState.off:
                                     return const Icon(
                                       Icons.flash_off,
@@ -133,7 +133,7 @@ class BarcodeScannerWithZoomState extends State<BarcodeScannerWithZoom>
                                 if (state == null) {
                                   return const Icon(Icons.camera_front);
                                 }
-                                switch (state as CameraFacing) {
+                                switch (state) {
                                   case CameraFacing.front:
                                     return const Icon(Icons.camera_front);
                                   case CameraFacing.back:

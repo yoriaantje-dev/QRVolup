@@ -11,7 +11,7 @@ class Participant {
 
   Map<String, dynamic> toMap() {
     return {
-      "name": name,
+      "name": name.trim().toLowerCase(),
       "checkedIn": checkedIn,
     };
   }
