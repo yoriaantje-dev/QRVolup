@@ -162,9 +162,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void functionAddParticipantList(String input) {
     if (input.isNotEmpty) {
       List<String> participantStringList = input.split(",");
-      for (String name in participantStringList) {
+      for (String participant in participantStringList) {
         setState(() {
-          participantList.add(Participant(name.trim().toLowerCase()));
+          List<String> participantInfo = participant.split("-");
+          participantList.add(Participant(participantInfo[0], participantInfo[1]));
         });
       }
       removeDuplicateParticipants();

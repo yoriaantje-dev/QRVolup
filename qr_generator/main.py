@@ -11,8 +11,10 @@ font_calibri = ImageFont.truetype('calibri.ttf', 22)
 
 for line in file:
   participant_data = line.strip().split(";")
+  participant_info = participant_data[0].strip().split("-")
   praticipant = {
-      "name": participant_data[0],
+      "name": participant_info[0],
+      "info": participant_info[1],
       "mail": participant_data[1],
   }
   participant_list.append(praticipant)
@@ -23,6 +25,7 @@ mail_file = open(f"{root_folder}/qr_generator/mail.txt", "w")
 deelnemer_file = open(f"{root_folder}/qr_generator/deelnemerlijst.txt", "w")
 for participant in participant_list:
     name = participant["name"]
+    info = participant["info"]
     email = participant["mail"]
 
     code = qrcode.make(name)
@@ -35,7 +38,7 @@ for participant in participant_list:
 
     image.save(f"{root_folder}/qr_generator/codes/{name}.png")
     mail_file.write(f"{name.strip()} {email}\n")
-    deelnemer_file.write(f"{name.strip()},")
+    deelnemer_file.write(f"{name.strip()}-{info.strip()},")
 
 mail_file.close()
 deelnemer_file.close()
